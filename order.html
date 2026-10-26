@@ -35,6 +35,12 @@ button{font:inherit;cursor:pointer}
 .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}#res .btn.ghost{color:#3a2300;border-color:#3a2300;background:#fff}
 .promo{background:var(--bg2);border-radius:14px;padding:10px 14px;margin-bottom:14px;color:var(--mut);font-size:.92rem}
 @keyframes bob{50%{transform:translateY(-6px)}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+#res h2{margin:0 0 4px}.step{background:#fff;color:#2a2350;border-radius:18px;padding:14px 16px;margin-top:12px}.step h3{margin:0 0 8px;font-size:1.15rem}
+dl.sum{display:grid;grid-template-columns:minmax(96px,36%) minmax(0,1fr);gap:6px 12px;margin:8px 0 0;font-size:.95rem}dl.sum dt{color:#645d85}dl.sum dd{margin:0;font-weight:600;overflow-wrap:anywhere}
+.total{font-size:1.7rem;font-weight:700;color:#e65a00;margin:6px 0}.payline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0;overflow-wrap:anywhere}
+.payline b{font-size:1.05rem}.mini{border:2px solid #6c4ad8;background:#fff;color:#6c4ad8;border-radius:999px;padding:4px 12px;font-weight:600;font-size:.85rem}
+#pay .btn{margin:8px 0}#qr{max-width:220px;width:100%;border-radius:14px;border:3px solid #6c4ad8;margin:8px 0;display:block}
 </style></head><body><main>
 <div class="top"><a id="back" href="./">← На главную</a><span id="tgtop"></span></div>
 <h1>Расскажите о своём приключении</h1>
@@ -83,17 +89,25 @@ button{font:inherit;cursor:pointer}
 </form>
 
 <section id="res" aria-live="polite" hidden>
-<h2>Заявка готова! 🎉</h2>
-<p id="how"></p>
+<h2>Заказ <span id="oid"></span> почти готов! 🎉</h2>
+<p style="margin:0">Проверьте детали, оплатите и отправьте заявку нам в Telegram.</p>
+<div class="step"><h3>Ваш заказ</h3><dl class="sum" id="sum"></dl><div class="total" id="total"></div></div>
+<div class="step"><h3>① Оплата</h3><div id="pay"></div></div>
+<div class="step"><h3>② Отправьте заявку в Telegram</h3>
+<p class="hint" id="how" style="margin-top:0"></p>
 <textarea id="out" readonly aria-label="Текст заявки"></textarea>
 <div class="btns"><button type="button" id="copy" class="btn">Скопировать заявку</button><a id="tg" class="btn ghost" hidden>Открыть Telegram</a></div>
-<p class="hint" id="cm" style="margin-top:10px;color:#3a2300"></p>
+<p class="hint" id="cm" style="margin-top:10px"></p></div>
 </section>
 </main>
 <script>
 const CONTACT="@Alex_delo";
+const PAY={sbp:"",bank:"",who:"",card:"",link:""};
+const PRICE={ready:490,standard:1490,premium:2990},RUSH=500,PROMO={"КВЕСТ10":10};
+const TNAME={ready:"Готовый квест",standard:"Стандарт",premium:"Премиум"};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const ICONS=[["playground","Детская площадка"],["gazebo","Беседка"],["park","Парк, сквер, лес"],["tree","Дерево"],["bench","Скамейка"],["pond","Водоём (смотрим издали)"],["school","Школа, сад"],["house","Дом, ворота"],["building","Здание, пункт выдачи"],["shopyard","Площадка у магазина"],["generic","Другое"]];
+const money=n=>n.toLocaleString("ru-RU")+" ₽";
 function addPoint(v){v=v||{};const d=document.createElement("div");d.className="pt";
 d.innerHTML='<h4><span class="n"></span>Точка</h4><div class="row"><label>Название места<input data-k="name"></label><label>Тип места<select data-k="icon">'+ICONS.map(i=>'<option value="'+i[0]+'">'+i[1]+'</option>').join("")+'</select></label></div><div class="row"><label>Приметы: что там есть (скамейка, ворота, номер дома…)<input data-k="features"></label><label>Куда спрятать карточку<input data-k="hide" placeholder="например, под скамейкой"></label></div><p><button type="button" class="small rm">Убрать точку</button></p>';
 d.querySelectorAll("[data-k]").forEach(e=>{if(v[e.dataset.k])e.value=v[e.dataset.k]});
@@ -108,6 +122,17 @@ if(o){IDS.forEach(i=>{if(o[i]!=null&&$("#"+i))$("#"+i).value=o[i]});$("#adult").
 while($$(".pt").length<3)addPoint()}
 $("#f").addEventListener("input",save);
 function v(i){return $("#"+i).value.trim()}
+async function copyText(txt,btn,done){try{await navigator.clipboard.writeText(txt);btn.textContent=done||"Скопировано ✓"}catch(e){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");btn.textContent=done||"Скопировано ✓"}catch(_){btn.textContent="Скопируйте вручную"}ta.remove()}}
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+function payLine(label,val){const d=el("div","payline");d.appendChild(el("span",null,label));d.appendChild(el("b",null,val));const b=el("button","mini","Скопировать");b.type="button";b.onclick=()=>copyText(val,b);d.appendChild(b);return d}
+function renderPay(total,oid){const p=$("#pay");p.textContent="";p.appendChild(el("div","total","К оплате: "+money(total)));
+let any=false;
+if(PAY.sbp){any=true;p.appendChild(payLine("СБП, по номеру телефона:",PAY.sbp));if(PAY.bank||PAY.who)p.appendChild(el("p","hint",[PAY.bank&&"Банк: "+PAY.bank,PAY.who&&"Получатель: "+PAY.who].filter(Boolean).join(" · ")))}
+if(PAY.card){any=true;p.appendChild(payLine("На карту:",PAY.card))}
+if(PAY.link){any=true;const a=el("a","btn","Оплатить онлайн");a.href=PAY.link;a.target="_blank";a.rel="noopener";p.appendChild(a)}
+const qr=document.createElement("img");qr.id="qr";qr.alt="QR-код для оплаты";qr.hidden=true;qr.onload=()=>{qr.hidden=false};qr.src="qr.png";p.appendChild(qr);
+if(any)p.appendChild(el("p","hint","В комментарии к переводу укажите: "+oid+". После оплаты отправьте нам скриншот чека."));
+else p.appendChild(el("p","hint","Реквизиты для оплаты пришлём в Telegram сразу после получения вашей заявки. Номер заказа: "+oid+"."))}
 $("#f").addEventListener("submit",e=>{e.preventDefault();
 $$("[aria-invalid]").forEach(x=>x.removeAttribute("aria-invalid"));const er=[];
 const need=(id,msg)=>{if(!v(id)){$("#"+id).setAttribute("aria-invalid","true");er.push(msg)}};
@@ -116,19 +141,46 @@ need("shide","Укажите, где начинаем");need("fname","Укажи
 const st=[];$$(".pt").forEach((p,i)=>{const r={};p.querySelectorAll("[data-k]").forEach(x=>r[x.dataset.k]=x.value.trim());
 if(!r.name||!r.hide){p.querySelectorAll('[data-k="name"],[data-k="hide"]').forEach(x=>{if(!x.value.trim())x.setAttribute("aria-invalid","true")});er.push("Точка "+(i+1)+": заполните название и где спрятать карточку")}
 st.push({name:r.name,icon:r.icon,features:r.features,hide:r.hide})});
+const t=v("tariff");
+if(t==="standard"&&st.length>5){$("#tariff").setAttribute("aria-invalid","true");er.push("В комплекте «Стандарт» до 5 точек. Уберите лишние точки или выберите «Премиум»")}
 if(!$("#adult").checked)er.push("Подтвердите, что дети будут под присмотром взрослого");
 $("#err").innerHTML=er.map(x=>"<li>"+x.replace(/</g,"&lt;")+"</li>").join("");
 if(er.length){$("#err").scrollIntoView({behavior:"smooth",block:"center"});return}
-const order={customer:{name:v("cname"),contact:v("contact")},
+const code=v("promo").toUpperCase().replace(/\s/g,""),rush=$("#rush").checked;
+const sub=PRICE[t]+(rush?RUSH:0),pct=PROMO[code]||0,disc=Math.round(sub*pct/100),total=sub-disc;
+const oid="Q"+new Date().toISOString().slice(2,10).replace(/-/g,"")+"-"+String(Math.floor(Math.random()*900)+100);
+const order={order_id:oid,payment_status:"ожидает оплаты",price:{tariff:TNAME[t],base:PRICE[t],rush:rush?RUSH:0,promo:pct?code:null,discount_percent:pct,discount:disc,total:total},
+customer:{name:v("cname"),contact:v("contact")},
 event:{occasion:v("occ"),duration_min:+v("dur"),kids_age:v("age"),kids_count:+v("cnt"),kids_names:v("names").split(/[,\n]+/).map(s=>s.trim()).filter(Boolean)},
-theme:v("theme"),territory:v("terr"),style:v("style"),difficulty:v("diff"),tariff:v("tariff"),rush:$("#rush").checked,promo:v("promo").toUpperCase(),
+theme:v("theme"),territory:v("terr"),style:v("style"),difficulty:v("diff"),tariff:t,rush:rush,promo:code,
 start:{hide:v("shide")},stations:st,finish:{name:v("fname"),prize:v("prize"),icon:"shop"},
 safety:{danger:v("danger"),adult_present:true},notes:v("notes")};
-$("#out").value=JSON.stringify(order,null,2);$("#res").hidden=false;
-$("#how").textContent="Скопируйте текст ниже и отправьте нам в Telegram. По нему мы соберём ваш квест.";
-if(CONTACT){$("#tg").hidden=false;$("#tg").href="https://t.me/"+CONTACT.replace("@","");$("#tg").target="_blank";$("#tg").rel="noopener";$("#cm").textContent="Наш Telegram: "+CONTACT}
+const lab=k=>{const o=$("#"+k);return o.options[o.selectedIndex].text};
+const ik=Object.fromEntries(ICONS);
+const L=["ЗАКАЗ "+oid,"Комплект: "+TNAME[t]+" ("+money(PRICE[t])+")"];
+if(rush)L.push("Срочно за 24 часа: +"+money(RUSH));
+if(pct)L.push("Скидка по коду "+code+": −"+money(disc));else if(code)L.push("Код «"+code+"» не распознан, скидки нет");
+L.push("К ОПЛАТЕ: "+money(total),"Статус: ожидает оплаты","","Клиент: "+order.customer.name+", "+order.customer.contact,
+"Повод: "+lab("occ")+"; детей: "+order.event.kids_count+", возраст: "+order.event.kids_age+"; длительность: "+lab("dur"),
+order.event.kids_names.length?"Имена для дипломов: "+order.event.kids_names.join(", "):"Имена для дипломов: не указаны",
+"Тема: "+lab("theme")+"; место: "+lab("terr")+"; загадки: "+lab("style")+"; сложность: "+lab("diff"),
+"Старт: "+order.start.hide,"Маршрут:");
+st.forEach((s,i)=>L.push("  "+(i+1)+") "+s.name+" ["+ik[s.icon]+"]; спрятать: "+s.hide+(s.features?"; приметы: "+s.features:"")));
+L.push("Финиш: "+order.finish.name+(order.finish.prize?"; приз: "+order.finish.prize:""),"Опасные места: "+order.safety.danger);
+if(order.notes)L.push("Пожелания: "+order.notes);
+L.push("","—— данные для генератора ——",JSON.stringify(order,null,2));
+$("#out").value=L.join("\n");
+$("#oid").textContent=oid;
+const sum=$("#sum");sum.textContent="";
+[["Комплект",TNAME[t]+" — "+money(PRICE[t])],rush?["Срочно","+"+money(RUSH)]:null,pct?["Скидка "+pct+"% ("+code+")","−"+money(disc)]:(code?["Код","не распознан, скидки нет"]:null),
+["Тема",lab("theme")],["Место",lab("terr")],["Детей",order.event.kids_count+", "+order.event.kids_age+" лет"],["Точек в маршруте",String(st.length)]].filter(Boolean).forEach(r=>{sum.appendChild(el("dt",null,r[0]));sum.appendChild(el("dd",null,r[1]))});
+$("#total").textContent="Итого: "+money(total);
+renderPay(total,oid);
+$("#how").textContent="Скопируйте текст ниже и отправьте нам в Telegram"+(CONTACT?" ("+CONTACT+")":"")+". По нему мы соберём ваш квест.";
+$("#res").hidden=false;
+if(CONTACT){$("#tg").hidden=false;$("#tg").href="https://t.me/"+CONTACT.replace("@","");$("#tg").target="_blank";$("#tg").rel="noopener";$("#cm").textContent="Откройте чат, вставьте скопированный текст и отправьте."}
 $("#res").scrollIntoView({behavior:"smooth"})});
-$("#copy").onclick=async()=>{const t=$("#out");try{await navigator.clipboard.writeText(t.value);$("#copy").textContent="Скопировано ✓"}catch(e){t.select();try{document.execCommand("copy");$("#copy").textContent="Скопировано ✓"}catch(_){$("#copy").textContent="Выделите текст и скопируйте вручную"}}};
+$("#copy").onclick=()=>copyText($("#out").value,$("#copy"),"Скопировано ✓ Теперь вставьте в Telegram");
 if(CONTACT)$("#tgtop").innerHTML='<a href="https://t.me/'+CONTACT.replace("@","")+'" target="_blank" rel="noopener">Telegram '+CONTACT+'</a>';
 load();
 </script></body></html>
