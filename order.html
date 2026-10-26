@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Анкета заказа квеста</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#dff3ff;--bg2:#fff6d8;--card:#fff;--tx:#2a2350;--mut:#645d85;--a:#ff7a1a;--b:#6c4ad8;--c:#2fb36b;--d:#ff5c8a;--bd:#e8defa;--err:#e0264f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17143f;--bg2:#241d5c;--card:#2b2470;--tx:#f4f1ff;--mut:#bdb6e6;--bd:#443b94;--err:#ff8aa5}}
+:root[data-theme="dark"]{--bg:#17143f;--bg2:#241d5c;--card:#2b2470;--tx:#f4f1ff;--mut:#bdb6e6;--bd:#443b94;--err:#ff8aa5}
+*{box-sizing:border-box}[hidden]{display:none!important}html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;color:var(--tx);background:linear-gradient(180deg,var(--bg) 0,var(--bg2) 100%) fixed;font:17px/1.5 Fredoka,"Trebuchet MS","Segoe UI Rounded",system-ui,sans-serif;overflow-x:hidden}
+main{max-width:760px;margin:0 auto;padding:22px 16px 70px}
+.top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:.95rem}.top a{color:var(--b);font-weight:600;text-decoration:none}
+h1{font-size:clamp(1.8rem,6vw,2.7rem);line-height:1.1;margin:.4em 0 .2em;font-weight:700}
+.route{display:flex;align-items:center;gap:6px;font-size:1.8rem;margin:10px 0}.route i{flex:1;border-top:4px dashed var(--b);opacity:.5}.route span{display:inline-block;animation:bob 3s ease-in-out infinite}
+.sub{color:var(--mut);margin:0 0 22px}
+fieldset{position:relative;border:3px dashed var(--b);background:var(--card);border-radius:26px;padding:22px 18px 8px;margin:0 0 26px;min-width:0}
+legend{background:var(--d);color:#fff;font-weight:700;padding:4px 16px;border-radius:10px;transform:rotate(-2deg);margin-left:6px}
+label{display:block;font-size:.95rem;color:var(--mut);margin:0 0 14px;font-weight:500}
+input,select,textarea{display:block;width:100%;margin-top:5px;padding:12px 14px;font:inherit;color:var(--tx);background:var(--bg2);border:2px solid var(--bd);border-radius:14px}
+input:focus,select:focus,textarea:focus{outline:3px solid var(--b);outline-offset:1px}[aria-invalid=true]{border-color:var(--err)}
+textarea{min-height:80px;resize:vertical}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px}@media(max-width:560px){.row{grid-template-columns:minmax(0,1fr)}}
+.pt{border:2px solid var(--bd);border-radius:20px;padding:14px 14px 4px;margin-bottom:14px;background:rgba(108,74,216,.05)}
+.pt h4{margin:0 0 10px;display:flex;align-items:center;gap:10px;font-size:1.05rem}.pt h4 .n{width:34px;height:34px;border-radius:50%;background:var(--a);color:#fff;display:inline-flex;align-items:center;justify-content:center}
+button{font:inherit;cursor:pointer}
+.btn{border:0;background:var(--a);color:#fff;font-weight:700;padding:13px 26px;border-radius:999px;font-size:1.05rem;box-shadow:0 5px 0 rgba(0,0,0,.18);text-decoration:none;display:inline-block;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.18)}.btn.ghost{background:var(--card);color:var(--b);border:2px solid var(--b);box-shadow:none}
+.small{background:var(--card);color:var(--b);border:2px solid var(--b);border-radius:999px;padding:8px 16px;font-weight:600;font-size:.92rem}
+.chk{display:flex;gap:12px;align-items:flex-start;color:var(--tx)}.chk input{width:22px;height:22px;margin-top:3px;flex:none;accent-color:var(--b)}
+.hint{font-size:.9rem;color:var(--mut);margin:-6px 0 14px}
+#err{color:var(--err);font-weight:600;margin:10px 0;padding-left:20px}
+#res{margin-top:22px;padding:22px;border-radius:24px;background:linear-gradient(135deg,#ffe27a,#ffb36b);color:#3a2300}#res h2{margin:0 0 6px;font-size:1.6rem}
+#res textarea{min-height:230px;font:12.5px/1.4 ui-monospace,Menlo,Consolas,monospace;background:#fff;color:#2a2350;border-color:#3a2300}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}#res .btn.ghost{color:#3a2300;border-color:#3a2300;background:#fff}
+.promo{background:var(--bg2);border-radius:14px;padding:10px 14px;margin-bottom:14px;color:var(--mut);font-size:.92rem}
+@keyframes bob{50%{transform:translateY(-6px)}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body><main>
+<div class="top"><a id="back" href="./">← На главную</a><span id="tgtop"></span></div>
+<h1>Расскажите о своём приключении</h1>
+<div class="route" aria-hidden="true"><span>🏠</span><i></i><span>🛝</span><i></i><span>🌳</span><i></i><span>🎁</span></div>
+<p class="sub">Заполните за 10 минут. Чем точнее опишете места, тем интереснее получится квест. Готовый комплект для печати пришлём в течение суток.</p>
+<form id="f" novalidate>
+<fieldset><legend>1. 👋 Контакты</legend><div class="row">
+<label>Ваше имя<input id="cname" autocomplete="name"></label>
+<label>Как с вами связаться (Telegram, телефон)<input id="contact"></label></div></fieldset>
+
+<fieldset><legend>2. 🎈 Праздник и участники</legend>
+<div class="row"><label>Повод<select id="occ"><option>Просто прогулка / каникулы</option><option>День рождения</option><option>Праздник во дворе или посёлке</option><option>Лагерь / школа / кружок</option><option>Корпоратив / семейный праздник</option></select></label>
+<label>Длительность игры<select id="dur"><option value="45">около 45 минут</option><option value="60" selected>около 60 минут</option><option value="90">около 90 минут</option><option value="120">около 2 часов</option></select></label></div>
+<div class="row"><label>Возраст детей (например, 8–10)<input id="age"></label>
+<label>Сколько детей<input id="cnt" type="number" min="1" max="60" inputmode="numeric"></label></div>
+<label>Имена детей для дипломов (необязательно, через запятую)<textarea id="names"></textarea></label></fieldset>
+
+<fieldset><legend>3. 🎭 Тема и место</legend>
+<div class="row"><label>Тематика<select id="theme"><option value="guardian">Хранитель (волшебная тайна)</option><option value="pirates">Пираты и клад</option><option value="detectives">Детективы</option><option value="halloween">Хэллоуин (добрые призраки)</option><option value="newyear">Новый год (Дед Мороз)</option></select></label>
+<label>Где играем<select id="terr"><option value="посёлок">Коттеджный посёлок</option><option value="двор">Двор многоквартирного дома</option><option value="дача">Дача / СНТ</option><option value="парк">Парк / сквер</option><option value="база отдыха">База отдыха / кемпинг</option><option value="школа">Школа</option><option value="детский сад">Детский сад</option><option value="лагерь">Лагерь / кружок</option><option value="отель">Отель</option><option value="организация">Офис, ТЦ, музей</option><option value="город">Город / район</option><option value="квартира">Квартира / дом внутри</option><option value="другое">Другое</option></select></label></div>
+<div class="row"><label>Загадки<select id="style"><option value="rhyme">В стихах</option><option value="simple">Простым текстом</option></select></label>
+<label>Сложность<select id="diff"><option value="easy">Лёгкая (6–8 лет)</option><option value="medium" selected>Средняя (8–11 лет)</option><option value="hard">Сложная (11+)</option></select></label></div></fieldset>
+
+<fieldset><legend>4. 🗺️ Маршрут</legend>
+<label>Где начинаем: куда вы положите Свиток-старт или где вручите его детям<input id="shide" placeholder="например, вручу на крыльце"></label>
+<p class="hint">Добавьте от 3 до 8 точек в порядке прохождения. Для каждой укажите, где можно спрятать карточку.</p>
+<div id="pts"></div>
+<p><button type="button" class="small" id="add">+ Добавить точку</button></p>
+<div class="row"><label>Финиш (где ждёт приз)<input id="fname" placeholder="например, магазин у дома"></label>
+<label>Что за приз<input id="prize" placeholder="сладости, медали, пицца"></label></div></fieldset>
+
+<fieldset><legend>5. 🛡️ Безопасность</legend>
+<label>Какие опасные места есть рядом: дороги, водоём, стройка, заброшки? (если нет, напишите «нет»)<textarea id="danger"></textarea></label>
+<p class="hint">Эти места мы не включим в маршрут и добавим предупреждения в правила.</p>
+<label class="chk"><input type="checkbox" id="adult"><span>Подтверждаю, что дети будут играть под присмотром взрослого, а ответственность за проведение квеста несёт организатор</span></label></fieldset>
+
+<fieldset><legend>6. 🎁 Комплект</legend>
+<label>Выберите комплект<select id="tariff"><option value="ready">Готовый квест (шаблон, меняются имена) · 490 ₽</option><option value="standard" selected>Стандарт: 3–5 точек по анкете · 1 490 ₽</option><option value="premium">Премиум: 6–8 точек, дипломы с именами, 2 уровня сложности · 2 990 ₽</option></select></label>
+<label class="chk"><input type="checkbox" id="rush"><span>Срочно, за 24 часа (+500 ₽)</span></label>
+<div class="promo" style="margin-top:14px">Прошли мини-квест на главной? Введите секретный код, чтобы получить скидку.</div>
+<label>Секретный код (необязательно)<input id="promo" autocomplete="off" autocapitalize="characters" placeholder="например, КВЕСТ10"></label>
+<label>Пожелания и особенности (необязательно)<textarea id="notes"></textarea></label></fieldset>
+
+<ul id="err"></ul>
+<button class="btn" type="submit">Сформировать заявку 🚀</button>
+</form>
+
+<section id="res" aria-live="polite" hidden>
+<h2>Заявка готова! 🎉</h2>
+<p id="how"></p>
+<textarea id="out" readonly aria-label="Текст заявки"></textarea>
+<div class="btns"><button type="button" id="copy" class="btn">Скопировать заявку</button><a id="tg" class="btn ghost" hidden>Открыть Telegram</a></div>
+<p class="hint" id="cm" style="margin-top:10px;color:#3a2300"></p>
+</section>
+</main>
+<script>
+const CONTACT="@Alex_delo";
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const ICONS=[["playground","Детская площадка"],["gazebo","Беседка"],["park","Парк, сквер, лес"],["tree","Дерево"],["bench","Скамейка"],["pond","Водоём (смотрим издали)"],["school","Школа, сад"],["house","Дом, ворота"],["building","Здание, пункт выдачи"],["shopyard","Площадка у магазина"],["generic","Другое"]];
+function addPoint(v){v=v||{};const d=document.createElement("div");d.className="pt";
+d.innerHTML='<h4><span class="n"></span>Точка</h4><div class="row"><label>Название места<input data-k="name"></label><label>Тип места<select data-k="icon">'+ICONS.map(i=>'<option value="'+i[0]+'">'+i[1]+'</option>').join("")+'</select></label></div><div class="row"><label>Приметы: что там есть (скамейка, ворота, номер дома…)<input data-k="features"></label><label>Куда спрятать карточку<input data-k="hide" placeholder="например, под скамейкой"></label></div><p><button type="button" class="small rm">Убрать точку</button></p>';
+d.querySelectorAll("[data-k]").forEach(e=>{if(v[e.dataset.k])e.value=v[e.dataset.k]});
+d.querySelector(".rm").onclick=()=>{d.remove();renum();save()};$("#pts").appendChild(d);renum()}
+function renum(){const p=$$(".pt");p.forEach((e,i)=>{e.querySelector(".n").textContent=i+1;e.querySelector(".rm").hidden=p.length<=3});$("#add").hidden=p.length>=8}
+$("#add").onclick=()=>{addPoint();save()};
+const IDS=["cname","contact","occ","dur","age","cnt","names","theme","terr","style","diff","shide","fname","prize","danger","tariff","promo","notes"];
+function save(){try{const o={};IDS.forEach(i=>o[i]=$("#"+i).value);o.adult=$("#adult").checked;o.rush=$("#rush").checked;
+o.pts=$$(".pt").map(p=>{const r={};p.querySelectorAll("[data-k]").forEach(e=>r[e.dataset.k]=e.value);return r});localStorage.setItem("quest-draft",JSON.stringify(o))}catch(e){}}
+function load(){let o=null;try{o=JSON.parse(localStorage.getItem("quest-draft")||"null")}catch(e){}
+if(o){IDS.forEach(i=>{if(o[i]!=null&&$("#"+i))$("#"+i).value=o[i]});$("#adult").checked=!!o.adult;$("#rush").checked=!!o.rush;(o.pts||[]).forEach(addPoint)}
+while($$(".pt").length<3)addPoint()}
+$("#f").addEventListener("input",save);
+function v(i){return $("#"+i).value.trim()}
+$("#f").addEventListener("submit",e=>{e.preventDefault();
+$$("[aria-invalid]").forEach(x=>x.removeAttribute("aria-invalid"));const er=[];
+const need=(id,msg)=>{if(!v(id)){$("#"+id).setAttribute("aria-invalid","true");er.push(msg)}};
+need("cname","Укажите ваше имя");need("contact","Укажите, как с вами связаться");need("age","Укажите возраст детей");need("cnt","Укажите, сколько детей");
+need("shide","Укажите, где начинаем");need("fname","Укажите финиш");need("danger","Опишите опасные места или напишите «нет»");
+const st=[];$$(".pt").forEach((p,i)=>{const r={};p.querySelectorAll("[data-k]").forEach(x=>r[x.dataset.k]=x.value.trim());
+if(!r.name||!r.hide){p.querySelectorAll('[data-k="name"],[data-k="hide"]').forEach(x=>{if(!x.value.trim())x.setAttribute("aria-invalid","true")});er.push("Точка "+(i+1)+": заполните название и где спрятать карточку")}
+st.push({name:r.name,icon:r.icon,features:r.features,hide:r.hide})});
+if(!$("#adult").checked)er.push("Подтвердите, что дети будут под присмотром взрослого");
+$("#err").innerHTML=er.map(x=>"<li>"+x.replace(/</g,"&lt;")+"</li>").join("");
+if(er.length){$("#err").scrollIntoView({behavior:"smooth",block:"center"});return}
+const order={customer:{name:v("cname"),contact:v("contact")},
+event:{occasion:v("occ"),duration_min:+v("dur"),kids_age:v("age"),kids_count:+v("cnt"),kids_names:v("names").split(/[,\n]+/).map(s=>s.trim()).filter(Boolean)},
+theme:v("theme"),territory:v("terr"),style:v("style"),difficulty:v("diff"),tariff:v("tariff"),rush:$("#rush").checked,promo:v("promo").toUpperCase(),
+start:{hide:v("shide")},stations:st,finish:{name:v("fname"),prize:v("prize"),icon:"shop"},
+safety:{danger:v("danger"),adult_present:true},notes:v("notes")};
+$("#out").value=JSON.stringify(order,null,2);$("#res").hidden=false;
+$("#how").textContent="Скопируйте текст ниже и отправьте нам в Telegram. По нему мы соберём ваш квест.";
+if(CONTACT){$("#tg").hidden=false;$("#tg").href="https://t.me/"+CONTACT.replace("@","");$("#tg").target="_blank";$("#tg").rel="noopener";$("#cm").textContent="Наш Telegram: "+CONTACT}
+$("#res").scrollIntoView({behavior:"smooth"})});
+$("#copy").onclick=async()=>{const t=$("#out");try{await navigator.clipboard.writeText(t.value);$("#copy").textContent="Скопировано ✓"}catch(e){t.select();try{document.execCommand("copy");$("#copy").textContent="Скопировано ✓"}catch(_){$("#copy").textContent="Выделите текст и скопируйте вручную"}}};
+if(CONTACT)$("#tgtop").innerHTML='<a href="https://t.me/'+CONTACT.replace("@","")+'" target="_blank" rel="noopener">Telegram '+CONTACT+'</a>';
+load();
+</script></body></html>
