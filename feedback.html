@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Отзыв о квесте</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#dff3ff;--bg2:#fff6d8;--card:#fff;--tx:#2a2350;--mut:#645d85;--a:#ff7a1a;--b:#6c4ad8;--c:#2fb36b;--d:#ff5c8a;--bd:#e8defa;--err:#e0264f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17143f;--bg2:#241d5c;--card:#2b2470;--tx:#f4f1ff;--mut:#bdb6e6;--bd:#443b94;--err:#ff8aa5}}
+:root[data-theme="dark"]{--bg:#17143f;--bg2:#241d5c;--card:#2b2470;--tx:#f4f1ff;--mut:#bdb6e6;--bd:#443b94;--err:#ff8aa5}
+*{box-sizing:border-box}[hidden]{display:none!important}html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;color:var(--tx);background:linear-gradient(180deg,var(--bg) 0,var(--bg2) 100%) fixed;font:17px/1.5 Fredoka,"Trebuchet MS","Segoe UI Rounded",system-ui,sans-serif;overflow-x:hidden}
+main{max-width:720px;margin:0 auto;padding:22px 16px 70px}
+.top a{color:var(--b);font-weight:600;text-decoration:none}
+h1{font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.1;margin:.4em 0 .2em}.sub{color:var(--mut);margin:0 0 22px}
+fieldset{position:relative;border:3px dashed var(--b);background:var(--card);border-radius:26px;padding:22px 18px 10px;margin:0 0 26px;min-width:0}
+legend{background:var(--d);color:#fff;font-weight:700;padding:4px 16px;border-radius:10px;transform:rotate(-2deg);margin-left:6px}
+label.f{display:block;font-size:.95rem;color:var(--mut);margin:0 0 14px;font-weight:500}
+input[type=text],input[type=number],select,textarea{display:block;width:100%;margin-top:5px;padding:12px 14px;font:inherit;color:var(--tx);background:var(--bg2);border:2px solid var(--bd);border-radius:14px}
+input:focus,select:focus,textarea:focus{outline:3px solid var(--b);outline-offset:1px}textarea{min-height:90px;resize:vertical}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px}@media(max-width:560px){.row{grid-template-columns:minmax(0,1fr)}}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.opts label{position:relative;cursor:pointer}.opts input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.opts span{display:inline-block;padding:8px 14px;border-radius:999px;border:2px solid var(--bd);background:var(--bg2);font-weight:500;font-size:.95rem;transition:.15s}
+.opts input:checked+span{background:var(--b);border-color:var(--b);color:#fff}.opts input:focus-visible+span{outline:3px solid var(--a);outline-offset:2px}
+.rate span{font-size:1.1rem;padding:8px 16px}.rate input:checked+span{background:var(--a);border-color:var(--a)}
+.hint{font-size:.9rem;color:var(--mut);margin:-6px 0 14px}.chk{display:flex;gap:12px;align-items:flex-start;margin:0 0 12px;color:var(--tx);cursor:pointer}.chk input{width:22px;height:22px;margin-top:3px;flex:none;accent-color:var(--b)}
+button{font:inherit;cursor:pointer}.btn{border:0;background:var(--a);color:#fff;font-weight:700;padding:13px 26px;border-radius:999px;font-size:1.05rem;box-shadow:0 5px 0 rgba(0,0,0,.18);text-decoration:none;display:inline-block}
+.btn.ghost{background:var(--card);color:var(--b);border:2px solid var(--b);box-shadow:none}
+#err{color:var(--err);font-weight:600;margin:10px 0;padding-left:20px}
+#res{margin-top:22px;padding:22px;border-radius:24px;background:linear-gradient(135deg,#ffe27a,#ffb36b);color:#3a2300}#res h2{margin:0 0 6px;font-size:1.6rem}
+#res textarea{background:#fff;color:#2a2350;border-color:#3a2300;min-height:150px}#res .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}#res .btn.ghost{color:#3a2300;border-color:#3a2300;background:#fff}
+#res details{margin-top:12px}#res pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;background:#fff;color:#2a2350;padding:12px;border-radius:12px;margin:8px 0 0}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body><main>
+<div class="top"><a href="./">← На главную</a></div>
+<h1>Как прошёл ваш квест? 🎉</h1>
+<p class="sub">Отметьте варианты, а готовый отзыв мы составим за вас. Это займёт две минуты и поможет нам сделать квесты лучше.</p>
+<form id="f" novalidate>
+<fieldset><legend>1. ⭐ Общее впечатление</legend>
+<p class="hint">Поставьте оценку от 1 до 5.</p>
+<div class="opts rate" role="radiogroup" aria-label="Оценка">
+<label><input type="radio" name="rate" value="1"><span>1 ★</span></label><label><input type="radio" name="rate" value="2"><span>2 ★</span></label><label><input type="radio" name="rate" value="3"><span>3 ★</span></label><label><input type="radio" name="rate" value="4"><span>4 ★</span></label><label><input type="radio" name="rate" value="5"><span>5 ★</span></label></div>
+<div class="row"><label class="f">Сколько было детей<input type="number" id="kids" min="1" max="60" inputmode="numeric"></label><label class="f">Возраст (например, 8–10)<input type="text" id="age"></label></div></fieldset>
+
+<fieldset><legend>2. 👍 Что понравилось</legend><p class="hint">Отметьте всё, что подходит.</p>
+<div class="opts" id="likes"></div></fieldset>
+
+<fieldset><legend>3. 🤔 Что было сложно или непонятно</legend><p class="hint">Это поможет нам исправить квесты. Если проблем не было, выберите «Сложностей не было».</p>
+<div class="opts" id="issues"></div></fieldset>
+
+<fieldset><legend>4. ⏱️ Время и планы</legend>
+<div class="row"><label class="f">Сколько заняла подготовка<select id="prep"><option value="">Выберите</option><option>до 30 минут</option><option>30–60 минут</option><option>больше часа</option></select></label>
+<label class="f">Сколько длилась игра<select id="play"><option value="">Выберите</option><option>до 30 минут</option><option>30–60 минут</option><option>60–90 минут</option><option>больше 90 минут</option></select></label></div>
+<div class="row"><label class="f">Закажете ещё раз?<select id="again"><option value="">Выберите</option><option>да</option><option>возможно</option><option>нет</option></select></label>
+<label class="f">Посоветуете друзьям?<select id="rec"><option value="">Выберите</option><option>да</option><option>возможно</option><option>нет</option></select></label></div></fieldset>
+
+<fieldset><legend>5. ✍️ Своими словами</legend>
+<label class="f">Одна-две фразы от себя (необязательно)<textarea id="comment" placeholder="Например: дети просили повторить"></textarea></label>
+<label class="f">Номер заказа (необязательно, вида Q261027-714)<input type="text" id="oid" autocomplete="off"></label></fieldset>
+
+<fieldset><legend>6. 📣 Разрешения</legend>
+<label class="chk"><input type="checkbox" id="c1"><span>Можно опубликовать мой отзыв на сайте и в канале (без имени)</span></label>
+<label class="chk"><input type="checkbox" id="c2"><span>Можно указать моё имя рядом с отзывом</span></label>
+<label class="chk"><input type="checkbox" id="c3"><span>Могу прислать фото с игры (без лиц детей или с согласия родителей) для публикации</span></label></fieldset>
+
+<ul id="err"></ul>
+<button class="btn" type="submit">Составить отзыв ✨</button>
+</form>
+
+<section id="res" hidden aria-live="polite">
+<h2>Ваш отзыв готов! 💌</h2>
+<p style="margin:0 0 8px">Проверьте текст, при желании поправьте и отправьте нам в Telegram. Спасибо, что помогаете!</p>
+<textarea id="out" aria-label="Текст отзыва"></textarea>
+<div class="btns"><button type="button" id="copy" class="btn">Скопировать отзыв</button><a id="tg" class="btn ghost" hidden>Открыть Telegram</a></div>
+<details><summary>Данные для нас (отправляются вместе с отзывом)</summary><pre id="data"></pre></details>
+</section></main>
+<script>
+const CONTACT="@Alex_delo";
+const $=s=>document.querySelector(s);
+const LIKES={riddles:"загадки",ciphers:"шифры",map:"карта",passport:"паспорт искателя",diploma:"дипломы",prize:"финал с призом",theme:"тема и сюжет",self:"дети играли сами",prep:"быстрая подготовка",places:"загадки про наши места"};
+const ISSUES={hard:"часть шифров была слишком сложной",easy:"шифры были слишком лёгкими",lead:"одна из загадок не вела к нужному месту",find:"не сразу нашли карточку",text:"мелкий или трудный для чтения текст",long:"игра затянулась",short:"игра закончилась слишком быстро",unclear:"в правилах что-то было непонятно",none:"сложностей не было"};
+function build(id,obj,name){$(id).innerHTML=Object.entries(obj).map(([k,t])=>'<label><input type="checkbox" name="'+name+'" value="'+k+'"><span>'+t[0].toUpperCase()+t.slice(1)+'</span></label>').join("")}
+build("#likes",LIKES,"likes");build("#issues",ISSUES,"issues");
+document.querySelectorAll('[name=issues]').forEach(i=>i.addEventListener("change",()=>{if(i.value==="none"&&i.checked)document.querySelectorAll('[name=issues]').forEach(o=>{if(o.value!=="none")o.checked=false});else if(i.checked)document.querySelector('[name=issues][value=none]').checked=false}));
+const vals=n=>[...document.querySelectorAll('[name='+n+']:checked')].map(x=>x.value);
+const v=i=>$("#"+i).value.trim();
+$("#f").addEventListener("submit",e=>{e.preventDefault();const er=[];
+const rate=document.querySelector('[name=rate]:checked');if(!rate)er.push("Поставьте оценку от 1 до 5");
+if(!vals("likes").length&&!vals("issues").length&&!v("comment"))er.push("Отметьте хотя бы один вариант или напишите пару слов");
+$("#err").innerHTML=er.map(x=>"<li>"+x+"</li>").join("");if(er.length){$("#err").scrollIntoView({behavior:"smooth",block:"center"});return}
+const likes=vals("likes"),issues=vals("issues"),r=+rate.value;
+const P=[];P.push("Оценка: "+r+" из 5.");
+if(v("kids")||v("age"))P.push("Играло детей: "+(v("kids")||"—")+(v("age")?" (возраст "+v("age")+")":"")+".");
+if(likes.length)P.push("Понравилось: "+likes.map(k=>LIKES[k]).join(", ")+".");
+if(issues.includes("none"))P.push("Сложностей не возникло.");else if(issues.length)P.push("Что можно улучшить: "+issues.map(k=>ISSUES[k]).join("; ")+".");
+const t=[v("prep")&&("подготовка заняла "+v("prep")),v("play")&&("игра длилась "+v("play"))].filter(Boolean).join(", ");if(t)P.push(t[0].toUpperCase()+t.slice(1)+".");
+if(v("again"))P.push("Закажу ещё раз: "+v("again")+".");if(v("rec"))P.push("Посоветую друзьям: "+v("rec")+".");
+if(v("comment"))P.push(v("comment"));
+$("#out").value=P.join(" ");
+const data={feedback:{order_id:v("oid")||null,rating:r,kids_count:+v("kids")||null,kids_age:v("age")||null,likes:likes,issues:issues,prep_time:v("prep")||null,play_time:v("play")||null,order_again:v("again")||null,recommend:v("rec")||null,comment:v("comment")||null,consent:{publish:$("#c1").checked,show_name:$("#c2").checked,photo:$("#c3").checked}}};
+$("#data").textContent=JSON.stringify(data,null,2);
+$("#res").hidden=false;if(CONTACT){$("#tg").hidden=false;$("#tg").href="https://t.me/"+CONTACT.replace("@","");$("#tg").target="_blank";$("#tg").rel="noopener"}
+$("#res").scrollIntoView({behavior:"smooth"})});
+$("#copy").onclick=async()=>{const txt=$("#out").value+"\n\n—— данные для нас ——\n"+$("#data").textContent;try{await navigator.clipboard.writeText(txt);$("#copy").textContent="Скопировано ✓ Вставьте в Telegram"}catch(e){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");$("#copy").textContent="Скопировано ✓ Вставьте в Telegram"}catch(_){$("#copy").textContent="Скопируйте вручную"}ta.remove()}};
+</script></body></html>
