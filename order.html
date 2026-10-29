@@ -41,6 +41,9 @@ dl.sum{display:grid;grid-template-columns:minmax(96px,36%) minmax(0,1fr);gap:6px
 .total{font-size:1.7rem;font-weight:700;color:#e65a00;margin:6px 0}.payline{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0;overflow-wrap:anywhere}
 .payline b{font-size:1.05rem}.mini{border:2px solid #6c4ad8;background:#fff;color:#6c4ad8;border-radius:999px;padding:4px 12px;font-weight:600;font-size:.85rem}
 #pay .btn{margin:8px 0}#qr{max-width:220px;width:100%;border-radius:14px;border:3px solid #6c4ad8;margin:8px 0;display:block}
+
+#sendst{font-weight:600;margin:8px 0 0}#res details.fb2{margin-top:12px}#res details.fb2 summary{cursor:pointer;font-weight:600}
+.big{font-size:1.15rem;padding:15px 30px}.priv{font-size:.82rem;opacity:.85;margin:8px 0 0}
 </style></head><body><main>
 <div class="top"><a id="back" href="./">← На главную</a><span id="tgtop"></span></div>
 <h1>Расскажите о своём приключении</h1>
@@ -93,15 +96,23 @@ dl.sum{display:grid;grid-template-columns:minmax(96px,36%) minmax(0,1fr);gap:6px
 <p style="margin:0">Проверьте детали, оплатите и отправьте заявку нам в Telegram.</p>
 <div class="step"><h3>Ваш заказ</h3><dl class="sum" id="sum"></dl><div class="total" id="total"></div></div>
 <div class="step"><h3>① Оплата</h3><div id="pay"></div></div>
-<div class="step"><h3>② Отправьте заявку в Telegram</h3>
+<div class="step"><h3>② Отправьте заявку</h3>
 <p class="hint" id="how" style="margin-top:0"></p>
+<input type="text" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+<button type="button" id="send" class="btn big" hidden>Отправить заявку ✉️</button>
+<p id="sendst" class="hint" role="status"></p>
+<p class="priv">Нажимая «Отправить», вы соглашаетесь, что мы используем указанные данные только для выполнения заказа и улучшения сервиса.</p>
+<details class="fb2" id="fb2"><summary>Другие способы отправить</summary>
+<p class="hint" style="margin:0 0 8px">Скопируйте текст и отправьте в Telegram или письмом на почту.</p>
 <textarea id="out" readonly aria-label="Текст заявки"></textarea>
-<div class="btns"><button type="button" id="copy" class="btn">Скопировать заявку</button><a id="tg" class="btn ghost" hidden>Открыть Telegram</a></div>
-<p class="hint" id="cm" style="margin-top:10px"></p></div>
+<div class="btns"><button type="button" id="copy" class="btn">Скопировать заявку</button><a id="tg" class="btn ghost" hidden>Открыть Telegram</a><a id="mail" class="btn ghost">Написать письмом</a></div>
+</details></div>
 </section>
 </main>
 <script>
 const CONTACT="@Alex_delo";
+const ENDPOINT="https://script.google.com/macros/s/AKfycbyRZndHTeyTRA7aGQNxw8YIweadRkgoFuaOi9_GL-FE14mXrs6YCntQMmqyD1EBescW1g/exec";
+const MAIL="al-vakarin@yandex.ru";
 const PAY={sbp:"+7 950 129-50-06",bank:"Т-Банк",who:"Алексей В.",card:"",link:""};
 const PRICE={ready:490,standard:1490,premium:2990},RUSH=500,PROMO={"КВЕСТ10":10};
 const TNAME={ready:"Готовый квест",standard:"Стандарт",premium:"Премиум"};
@@ -176,10 +187,21 @@ const sum=$("#sum");sum.textContent="";
 ["Тема",lab("theme")],["Место",lab("terr")],["Детей",order.event.kids_count+", "+order.event.kids_age+" лет"],["Точек в маршруте",String(st.length)]].filter(Boolean).forEach(r=>{sum.appendChild(el("dt",null,r[0]));sum.appendChild(el("dd",null,r[1]))});
 $("#total").textContent="Итого: "+money(total);
 renderPay(total,oid);
-$("#how").textContent="Скопируйте текст ниже и отправьте нам в Telegram"+(CONTACT?" ("+CONTACT+")":"")+". По нему мы соберём ваш квест.";
+$("#how").textContent=ENDPOINT?"Проверьте данные выше и нажмите кнопку: заявка сразу придёт нам.":"Скопируйте текст ниже и отправьте нам в Telegram"+(CONTACT?" ("+CONTACT+")":"")+" или письмом.";
 $("#res").hidden=false;
-if(CONTACT){$("#tg").hidden=false;$("#tg").href="https://t.me/"+CONTACT.replace("@","");$("#tg").target="_blank";$("#tg").rel="noopener";$("#cm").textContent="Откройте чат, вставьте скопированный текст и отправьте."}
+prepSend("order",oid,"Заказ "+oid+" · "+order.customer.name+" · "+money(total),$("#out").value,$("#out").value.split("\n\n—— данные для генератора ——")[0]);
 $("#res").scrollIntoView({behavior:"smooth"})});
+
+async function sendNow(kind,id,subject,text){const st=$("#sendst"),b=$("#send");
+st.textContent="Отправляем…";b.disabled=true;
+try{const hp=document.getElementById("hp");const r=await fetch(ENDPOINT,{method:"POST",body:JSON.stringify({kind:kind,id:id,subject:subject,text:text,hp:hp?hp.value:""})});
+const j=await r.json();if(j&&j.ok){st.textContent=kind==="feedback"?"Спасибо! Отзыв отправлен ✅":"Готово! Заявка отправлена ✅ Мы свяжемся с вами в Telegram или по телефону.";b.hidden=true;return}throw new Error("bad")}
+catch(e){st.textContent="Не получилось отправить автоматически. Воспользуйтесь запасным способом ниже.";b.disabled=false;$("#fb2").open=true}}
+function prepSend(kind,id,subject,text,readable){
+$("#send").hidden=!ENDPOINT;$("#send").disabled=false;$("#sendst").textContent="";$("#fb2").open=!ENDPOINT;
+$("#send").onclick=()=>sendNow(kind,id,subject,text);
+const m=$("#mail");m.href="mailto:"+MAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(readable.slice(0,1800));
+if(CONTACT){$("#tg").hidden=false;$("#tg").href="https://t.me/"+CONTACT.replace("@","");$("#tg").target="_blank";$("#tg").rel="noopener"}}
 $("#copy").onclick=()=>copyText($("#out").value,$("#copy"),"Скопировано ✓ Теперь вставьте в Telegram");
 if(CONTACT)$("#tgtop").innerHTML='<a href="https://t.me/'+CONTACT.replace("@","")+'" target="_blank" rel="noopener">Telegram '+CONTACT+'</a>';
 load();

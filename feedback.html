@@ -31,6 +31,9 @@ button{font:inherit;cursor:pointer}.btn{border:0;background:var(--a);color:#fff;
 #res textarea{background:#fff;color:#2a2350;border-color:#3a2300;min-height:150px}#res .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}#res .btn.ghost{color:#3a2300;border-color:#3a2300;background:#fff}
 #res details{margin-top:12px}#res pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;background:#fff;color:#2a2350;padding:12px;border-radius:12px;margin:8px 0 0}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+#sendst{font-weight:600;margin:8px 0 0}#res details.fb2{margin-top:12px}#res details.fb2 summary{cursor:pointer;font-weight:600}
+.big{font-size:1.15rem;padding:15px 30px}.priv{font-size:.82rem;opacity:.85;margin:8px 0 0}
 </style></head><body><main>
 <div class="top"><a href="./">← На главную</a></div>
 <h1>Как прошёл ваш квест? 🎉</h1>
@@ -71,11 +74,19 @@ button{font:inherit;cursor:pointer}.btn{border:0;background:var(--a);color:#fff;
 <h2>Ваш отзыв готов! 💌</h2>
 <p style="margin:0 0 8px">Проверьте текст, при желании поправьте и отправьте нам в Telegram. Спасибо, что помогаете!</p>
 <textarea id="out" aria-label="Текст отзыва"></textarea>
-<div class="btns"><button type="button" id="copy" class="btn">Скопировать отзыв</button><a id="tg" class="btn ghost" hidden>Открыть Telegram</a></div>
+<input type="text" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+<button type="button" id="send" class="btn big" hidden>Отправить отзыв ✉️</button>
+<p id="sendst" class="hint" role="status"></p>
+<p class="priv">Нажимая «Отправить», вы соглашаетесь, что мы используем указанные данные только для выполнения заказа и улучшения сервиса.</p>
+<details class="fb2" id="fb2"><summary>Другие способы отправить</summary>
+<div class="btns"><button type="button" id="copy" class="btn">Скопировать отзыв</button><a id="tg" class="btn ghost" hidden>Открыть Telegram</a><a id="mail" class="btn ghost">Написать письмом</a></div>
 <details><summary>Данные для нас (отправляются вместе с отзывом)</summary><pre id="data"></pre></details>
+</details>
 </section></main>
 <script>
 const CONTACT="@Alex_delo";
+const ENDPOINT="https://script.google.com/macros/s/AKfycbyRZndHTeyTRA7aGQNxw8YIweadRkgoFuaOi9_GL-FE14mXrs6YCntQMmqyD1EBescW1g/exec";
+const MAIL="al-vakarin@yandex.ru";
 const $=s=>document.querySelector(s);
 const LIKES={riddles:"загадки",ciphers:"шифры",map:"карта",passport:"паспорт искателя",diploma:"дипломы",prize:"финал с призом",theme:"тема и сюжет",self:"дети играли сами",prep:"быстрая подготовка",places:"загадки про наши места"};
 const ISSUES={hard:"часть шифров была слишком сложной",easy:"шифры были слишком лёгкими",lead:"одна из загадок не вела к нужному месту",find:"не сразу нашли карточку",text:"мелкий или трудный для чтения текст",long:"игра затянулась",short:"игра закончилась слишком быстро",unclear:"в правилах что-то было непонятно",none:"сложностей не было"};
@@ -99,7 +110,20 @@ if(v("comment"))P.push(v("comment"));
 $("#out").value=P.join(" ");
 const data={feedback:{order_id:v("oid")||null,rating:r,kids_count:+v("kids")||null,kids_age:v("age")||null,likes:likes,issues:issues,prep_time:v("prep")||null,play_time:v("play")||null,order_again:v("again")||null,recommend:v("rec")||null,comment:v("comment")||null,consent:{publish:$("#c1").checked,show_name:$("#c2").checked,photo:$("#c3").checked}}};
 $("#data").textContent=JSON.stringify(data,null,2);
-$("#res").hidden=false;if(CONTACT){$("#tg").hidden=false;$("#tg").href="https://t.me/"+CONTACT.replace("@","");$("#tg").target="_blank";$("#tg").rel="noopener"}
+$("#res").hidden=false;
+const full=$("#out").value+"\n\n—— данные для нас ——\n"+$("#data").textContent;
+prepSend("feedback",v("oid")||"",""+"Отзыв: "+r+" из 5"+(v("oid")?" · "+v("oid"):""),full,$("#out").value);
 $("#res").scrollIntoView({behavior:"smooth"})});
+
+async function sendNow(kind,id,subject,text){const st=$("#sendst"),b=$("#send");
+st.textContent="Отправляем…";b.disabled=true;
+try{const hp=document.getElementById("hp");const r=await fetch(ENDPOINT,{method:"POST",body:JSON.stringify({kind:kind,id:id,subject:subject,text:text,hp:hp?hp.value:""})});
+const j=await r.json();if(j&&j.ok){st.textContent=kind==="feedback"?"Спасибо! Отзыв отправлен ✅":"Готово! Заявка отправлена ✅ Мы свяжемся с вами в Telegram или по телефону.";b.hidden=true;return}throw new Error("bad")}
+catch(e){st.textContent="Не получилось отправить автоматически. Воспользуйтесь запасным способом ниже.";b.disabled=false;$("#fb2").open=true}}
+function prepSend(kind,id,subject,text,readable){
+$("#send").hidden=!ENDPOINT;$("#send").disabled=false;$("#sendst").textContent="";$("#fb2").open=!ENDPOINT;
+$("#send").onclick=()=>sendNow(kind,id,subject,text);
+const m=$("#mail");m.href="mailto:"+MAIL+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(readable.slice(0,1800));
+if(CONTACT){$("#tg").hidden=false;$("#tg").href="https://t.me/"+CONTACT.replace("@","");$("#tg").target="_blank";$("#tg").rel="noopener"}}
 $("#copy").onclick=async()=>{const txt=$("#out").value+"\n\n—— данные для нас ——\n"+$("#data").textContent;try{await navigator.clipboard.writeText(txt);$("#copy").textContent="Скопировано ✓ Вставьте в Telegram"}catch(e){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");$("#copy").textContent="Скопировано ✓ Вставьте в Telegram"}catch(_){$("#copy").textContent="Скопируйте вручную"}ta.remove()}};
 </script></body></html>
