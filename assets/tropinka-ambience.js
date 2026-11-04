@@ -119,7 +119,8 @@
     for(var i=0;i<count;i++){
       var d=.105+Math.random()*.055;
       var pitch=315+Math.random()*95+(i%2?24:-8);
-      giggleSyllable(now+t,pitch,d,.0038+Math.random()*.0014);
+      giggleSyllable(now+t,pitch,d,.008+Math.random()*.0018);
+      giggleSyllable(now+t+.035,pitch*1.16,d*.9,.0042+Math.random()*.0008);
       t+=d+.045+Math.random()*.045;
     }
     /* A tiny sparkle after the giggle. */
