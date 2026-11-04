@@ -135,3 +135,5 @@ input:focus,textarea:focus,select:focus{outline-color:#e3b653!important}
 #app .nav a,#app .btn{background:#fffefa!important;color:#79552e!important;border-color:#e8d7ae!important}
 #app .nav a.active,#app .btn.primary{background:linear-gradient(135deg,#ffe18a,#f4c45f)!important;color:#654820!important;border-color:#d8a448!important}
 #app .btn.gold{background:#ffe18a!important;color:#654820!important}
+
+@media(max-width:760px){.tp-music-toggle{right:12px!important;bottom:88px!important}}
