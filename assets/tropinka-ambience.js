@@ -16,7 +16,7 @@
     b.type="button";b.className="tp-music-toggle";
     b.setAttribute("aria-pressed","false");
     b.setAttribute("aria-label","Включить спокойную волшебную музыку");
-    b.textContent="♫ Включить музыку";
+    b.textContent="♫ Включить волшебную музыку";
     b.addEventListener("click",function(){if(active)stop();else start(false);});
     document.body.appendChild(b);
     return b;
@@ -24,7 +24,7 @@
   var button;
   function label(on){
     if(!button)return;
-    button.textContent=on?"♫ Музыка включена · Выключить":"♫ Включить музыку";
+    button.textContent=on?"♫ Музыка включена · Выключить":"♫ Включить волшебную музыку";
     button.setAttribute("aria-pressed",on?"true":"false");
     button.setAttribute("aria-label",on?"Выключить спокойную волшебную музыку":"Включить спокойную волшебную музыку");
     button.title=on?"Выключить музыку":"Включить спокойную волшебную музыку";
@@ -66,7 +66,6 @@
     try{
       var Audio=window.AudioContext||window.webkitAudioContext;
       if(!Audio)throw new Error("Web Audio is not supported");
-      if(closingTimer){clearTimeout(closingTimer);closingTimer=null;}
       ctx=new Audio();
       await ctx.resume();
       master=ctx.createGain();master.gain.setValueAtTime(.52,ctx.currentTime);master.connect(ctx.destination);
