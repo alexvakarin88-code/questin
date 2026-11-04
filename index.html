@@ -59,7 +59,61 @@ footer{text-align:center;color:var(--mut);font-size:.85rem;padding:0 18px 30px}
 
 .us{border-color:var(--a)!important}.cmp .sticker ul{list-style:none;padding:0;margin:.4em 0 0}.cmp .sticker li{padding:3px 0}.note{color:var(--mut);font-size:.9rem;margin-top:12px}
 .fb{display:block;margin-top:14px;color:var(--b);font-weight:600}
+/* Единая визуальная система проекта «Тропинка» */
+:root{color-scheme:light;--bg:#fbf8ef;--bg2:#edf2e6;--card:#fffefa;--tx:#24372c;--mut:#627267;--a:#e8c978;--b:#315f43;--c:#477b50;--d:#a66b4f;--bd:#dce5d7;--on:#fff;--star:transparent}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#fbf8ef;--bg2:#edf2e6;--card:#fffefa;--tx:#24372c;--mut:#627267;--bd:#dce5d7}}
+:root[data-theme="dark"]{--bg:#fbf8ef;--bg2:#edf2e6;--card:#fffefa;--tx:#24372c;--mut:#627267;--bd:#dce5d7}
+body{font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;background:linear-gradient(180deg,var(--cream,#fbf8ef) 0,var(--bg2) 100%) fixed;color:var(--tx)}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif}
+.hero{background:linear-gradient(125deg,#244b37,#315f43);border-radius:0 0 30px 30px;color:#fff;padding:44px 0 34px}
+.hero h1{color:#fff}
+.hero .lead{color:#edf4e9}
+.hl{background:linear-gradient(transparent 62%,#e8c978 62%);color:#fff}
+.sun{background:#e8c978;box-shadow:0 0 0 18px rgba(232,201,120,.18)}
+.cloud{opacity:.16}
+.route i{border-color:#e8c978}
+.pills b{border:1px solid #dce5d7;background:#fffefa;color:#315f43}
+.btn{background:#e8c978;color:#244b37;border:1px solid #c69d43;box-shadow:none}
+.btn:hover{background:#f1d995}
+.btn.ghost{background:#fffefa;color:#315f43;border:1px solid #cbd9c9}
+#quest .card{background:#fffefa;border:1px solid #dce5d7;border-radius:24px;box-shadow:0 14px 38px rgba(36,75,55,.09)}
+#quest .tape{background:#e8c978;color:#244b37;transform:translateX(-50%);border-radius:999px}
+.qtrack{background:#e7ecdf}.qtrack i{background:#477b50}
+.qs{border:1px solid #dce5d7;background:#fffefa}
+.qs.on{border-color:#477b50;background:#edf2e6}
+.qn,.qs.done .qn{background:#315f43}
+.qs.done{border-color:#477b50}
+form input{border:1px solid #cbd9c9;background:#fff;color:#24372c}
+form input:focus{outline:3px solid #e8c978}
+.hint{color:#315f43}
+.hintbox{background:#edf2e6;color:#506354}
+#win{background:#f5edcf;color:#4b421f;border:1px solid #e3d29c}
+.codebox{border:2px dashed #c69d43;background:#fffefa;color:#244b37}
+.sticker{border:1px solid #dce5d7;background:#fffefa;box-shadow:0 8px 24px rgba(36,75,55,.05)}
+.sticker:nth-child(odd),.sticker:nth-child(even){transform:none}
+.sticker:hover{transform:translateY(-2px)}
+.sticker .em{color:#315f43}
+.prev{background:#fffefa;color:#24372c;border:1px solid #dce5d7;border-radius:20px;padding:22px;box-shadow:0 12px 30px rgba(36,75,55,.08);transform:none}
+.prev .tag{background:#edf2e6;color:#315f43;border:1px solid #dce5d7}
+.prev .cells b{border:1px solid #cbd9c9;background:#edf2e6;color:#315f43}
+.price{color:#315f43}
+.pop{border-color:#c69d43!important}
+.pop .badge{background:#e8c978;color:#244b37}
+details{background:#fffefa;border:1px solid #dce5d7}
+summary{color:#315f43}
+.cta{background:transparent}
+.sticky{background:rgba(255,254,250,.97);border-top:1px solid #dce5d7}
+footer{color:#718075}
+.tp-sitebar{position:sticky;top:0;z-index:1000;background:rgba(251,248,239,.97);backdrop-filter:blur(12px);border-bottom:1px solid #dce5d7}
+.tp-sitebar-inner{max-width:1000px;margin:auto;min-height:58px;padding:7px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tp-sitebar-brand{display:inline-flex;align-items:center;gap:9px;color:#244b37;text-decoration:none;font:700 18px Georgia,"Times New Roman",serif}
+.tp-sitebar-brand span{display:grid;place-items:center;width:32px;height:32px;border-radius:11px;background:#edf2e6;color:#315f43;font:700 18px system-ui}
+.tp-sitebar-link{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 16px;border:1px solid #c69d43;border-radius:999px;background:#e8c978;color:#244b37;text-decoration:none;font-size:14px;font-weight:800}
+.tp-sitebar-link:hover{background:#f1d995}
+@media(max-width:480px){.tp-sitebar-inner{min-height:54px}.tp-sitebar-brand{font-size:16px}.tp-sitebar-link{min-height:38px;padding:7px 12px;font-size:13px}.hero{border-radius:0 0 22px 22px}}
+
 </style></head><body>
+<div class="tp-sitebar"><div class="tp-sitebar-inner"><a class="tp-sitebar-brand" href="https://tropinka-kids.ru/"><span aria-hidden="true">✦</span>Тропинка</a><a class="tp-sitebar-link" href="https://tropinka-kids.ru/">← На главную</a></div></div>
 <header class="hero"><div class="sun" aria-hidden="true"></div><div class="cloud" style="top:40px;left:0" aria-hidden="true"></div><div class="cloud" style="top:120px;left:0;animation-delay:-9s;transform:scale(.7)" aria-hidden="true"></div>
 <div class="w"><h1>Ваш двор — это <span class="hl">карта сокровищ</span>. Мы нарисуем её для вас</h1>
 <p class="lead">Загадки, шифры и клад в конце. Опишите место, где играют ваши дети, и через сутки получите готовый квест для печати. Без аниматоров и экранов.</p>
