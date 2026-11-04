@@ -126,3 +126,12 @@ input:focus,textarea:focus,select:focus{outline-color:#e3b653!important}
 .generator .hero h1,.hero:has(.brand) h1{color:#684a27!important}
 @media(max-width:760px){.tp-music-toggle{right:12px;bottom:88px;max-width:calc(100vw - 24px);font-size:13px}}
 @media(prefers-reduced-motion:reduce){.tp-music-toggle{transition:none}}
+
+/* Генератор квестов: верхний баннер и элементы навигации в общей палитре */
+#app>.hero{background:linear-gradient(120deg,#dff3ff,#fff0c9)!important;color:#5c452b!important;border:1px solid #efdfb9}
+#app>.hero h1,#app>.hero p{color:#684a27!important}
+#app>.hero small{color:#a66f2f!important}
+#app .brand b{background:#ffe18a!important;color:#79552e!important}
+#app .nav a,#app .btn{background:#fffefa!important;color:#79552e!important;border-color:#e8d7ae!important}
+#app .nav a.active,#app .btn.primary{background:linear-gradient(135deg,#ffe18a,#f4c45f)!important;color:#654820!important;border-color:#d8a448!important}
+#app .btn.gold{background:#ffe18a!important;color:#654820!important}
