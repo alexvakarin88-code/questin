@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f3e8"><title>Генератор квестов — Тропинка</title>
+<style>
+:root{--ink:#294333;--green:#557b55;--deep:#365b40;--cream:#f7f3e8;--paper:#fffdf7;--gold:#d7ad58;--line:#d9dfcf;--muted:#687667;--soft:#edf2e5}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.55 "Trebuchet MS","Segoe UI",system-ui,sans-serif}button,input,select,textarea{font:inherit}.wrap{max-width:1100px;margin:auto;padding:22px 16px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}.brand{font-weight:800;font-size:19px}.brand b{display:inline-grid;place-items:center;background:var(--deep);color:var(--gold);width:36px;height:36px;border-radius:50%;margin-right:8px}.nav{display:flex;gap:8px}.nav a,.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 16px;border:1px solid var(--line);border-radius:999px;background:white;color:var(--deep);font-weight:800;text-decoration:none;cursor:pointer}.nav a.active,.btn.primary{background:var(--green);color:white;border-color:var(--deep)}.btn.gold{background:var(--gold);color:var(--ink)}.hero{padding:30px;border-radius:24px;background:linear-gradient(120deg,#365b40,#66865c);color:white}.hero small{color:#f4dda0;font-weight:800;text-transform:uppercase}.hero h1{font:700 clamp(28px,5vw,40px)/1.15 Georgia,serif;margin:8px 0}.hero p{max-width:700px;margin:0;color:#f3f5eb}.notice{margin:16px 0;padding:12px 15px;border-radius:12px;background:#fff6db;border:1px solid #ead69d;color:#69552a;font-size:14px}.layout{display:grid;grid-template-columns:350px minmax(0,1fr);gap:18px;margin-top:18px;align-items:start}.panel{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 12px 30px rgba(48,75,48,.07)}h2{font:700 23px Georgia,serif;margin:0 0 6px}.lead{font-size:13px;color:var(--muted);margin:0 0 16px}.field{margin-bottom:13px}.field label{display:block;font-weight:800;font-size:14px;margin-bottom:5px}.field small{display:block;color:var(--muted);font-size:12px;margin-top:4px}input,select,textarea{width:100%;padding:10px 11px;border:1px solid #cbd6c5;border-radius:11px;background:white;color:var(--ink);min-height:42px}textarea{min-height:75px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.actions .btn{flex:1}.empty{text-align:center;border:1px dashed var(--line);border-radius:15px;padding:35px 15px;color:var(--muted)}.empty b{display:block;color:var(--gold);font-size:32px}.meta{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}.tag{background:var(--soft);color:var(--deep);border-radius:20px;padding:5px 9px;font-size:12px;font-weight:800}.section{border-top:1px solid var(--line);margin-top:16px;padding-top:15px}.section h3{font:700 19px Georgia,serif;margin:0 0 8px}.step{border:1px solid var(--line);border-radius:13px;padding:12px;margin:9px 0;background:white}.step h4{margin:0 0 6px;color:var(--deep)}.step p{margin:5px 0}.hint{font-size:13px;color:var(--muted)}.answer{margin-top:8px;background:var(--soft);border-radius:9px;padding:8px;font-size:13px}.studio{display:none}.is-studio .studio{display:block}.is-studio .client-only{display:none}.saved-item{display:flex;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding:8px 0;font-size:13px}.saved-item button{border:0;background:none;color:var(--deep);text-decoration:underline;font-weight:800;cursor:pointer}[hidden]{display:none!important}footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.hero{padding:23px}}@media(max-width:420px){.row{grid-template-columns:1fr}.nav{width:100%}.nav a{flex:1}}
+@media print{body{background:white}.top,.hero,.notice,.form-panel,.actions,footer{display:none!important}.wrap{padding:0}.layout{display:block}.panel{border:0;box-shadow:none;padding:0}.step{break-inside:avoid}.section{break-inside:avoid}}
+</style></head><body>
+<div class="wrap" id="app">
+<div class="top"><div class="brand"><b>✦</b>Тропинка / генератор квестов</div><nav class="nav"><a id="clientLink" href="generator.html">Клиентская версия</a><a id="studioLink" href="studio.html">Внутренняя студия</a></nav></div>
+<header class="hero"><small>Семейные приключения начинаются здесь</small><h1 id="heroTitle">Создайте квест для своей компании</h1><p id="heroText">Выберите возраст, тему и место проведения. Получите историю, задания, ответы, подсказки, маршрут и инструкцию ведущему.</p></header>
+<div class="notice client-only"><b>Тестовая версия.</b> Сценарии пока собираются из встроенных шаблонов. ИИ-модель, отправка заказа, оплата и серверное хранение ещё не подключены. Не вводите реальные персональные данные детей.</div>
+<div class="notice studio" ><b>Внутренняя студия — прототип.</b> Черновики сохраняются только в этом браузере. Страница пока не защищена авторизацией: не используйте реальные персональные данные.</div>
+<div class="layout">
+<section class="panel form-panel">
+<h2 id="formTitle">Параметры квеста</h2><p class="lead" id="formLead">Заполните настройки — генератор подготовит сценарий.</p>
+<form id="questForm">
+<div class="field"><label for="child">Имя героя (необязательно)</label><input id="child" maxlength="24" placeholder="Например, Миша"><small>Можно указать вымышленное имя.</small></div>
+<div class="row"><div class="field"><label for="age">Возраст</label><select id="age"><option value="5">4–6 лет</option><option value="8" selected>7–9 лет</option><option value="11">10–12 лет</option><option value="14">13–15 лет</option></select></div><div class="field"><label for="players">Участники</label><select id="players"><option value="1">1 ребёнок</option><option value="3" selected>2–5 детей</option><option value="8">6–12 детей</option><option value="family">Дети и взрослые</option></select></div></div>
+<div class="field"><label for="theme">Тема</label><select id="theme"><option value="agent">Секретные агенты</option><option value="pirate">Пираты и сокровища</option><option value="space">Космическая миссия</option><option value="detective">Юный детектив</option><option value="magic">Школа магии</option><option value="forest">Волшебный лес</option></select></div>
+<div class="field"><label for="place">Место проведения</label><select id="place"><option value="apartment">Квартира</option><option value="house">Частный дом</option><option value="yard">Двор / дача</option><option value="park">Парк / база отдыха</option><option value="cafe">Кафе / помещение</option></select></div>
+<div class="row"><div class="field"><label for="duration">Время</label><select id="duration"><option value="30">30 минут</option><option value="45">45 минут</option><option value="60" selected>60 минут</option><option value="90">90 минут</option><option value="120">120 минут</option></select></div><div class="field"><label for="difficulty">Сложность</label><select id="difficulty"><option value="easy">Лёгкая</option><option value="medium" selected>Средняя</option><option value="hard">Сложная</option></select></div></div>
+<div class="field"><label for="props">Реквизит</label><select id="props"><option value="none">Без специального реквизита</option><option value="simple" selected>Бумага, ручка, бытовые предметы</option><option value="print">Можно распечатать карточки</option></select></div>
+<div class="field"><label for="interest">Интересы и пожелания</label><textarea id="interest" maxlength="350" placeholder="Например: любит динозавров, загадки и командные задания."></textarea></div>
+<div class="actions"><button class="btn primary" type="submit">✦ Создать квест</button><button class="btn" type="reset">Очистить</button></div>
+</form>
+<div class="studio section"><h3>Сохранённые черновики</h3><p class="lead">Доступны только в этом браузере, до подключения общей базы.</p><div id="savedList"></div></div>
+</section>
+<section class="panel">
+<div id="empty" class="empty"><b>✦</b><h2>Ваше приключение появится здесь</h2><p>Заполните настройки и нажмите «Создать квест».</p></div>
+<div id="result" hidden><h2 id="questTitle"></h2><p id="questIntro" class="lead"></p><div id="meta" class="meta"></div><div id="rendered"></div>
+<div class="actions"><button class="btn gold" id="printBtn" type="button">Сохранить / распечатать PDF</button><button class="btn" id="copyBtn" type="button">Скопировать текст</button><button class="btn" id="downloadBtn" type="button">Скачать TXT</button><button class="btn" id="jsonBtn" type="button">Экспорт JSON</button></div>
+<div class="studio section"><h3>Редактор сценария</h3><p class="lead">Отредактируйте полный текст перед выдачей заказчику.</p><textarea id="editor" style="min-height:260px"></textarea><div class="actions"><button class="btn primary" id="saveDraftBtn" type="button">Сохранить черновик</button><button class="btn" id="resetTextBtn" type="button">Вернуть исходный текст</button></div><p id="saveStatus" class="lead"></p><div class="section"><h3>Контроль качества</h3><div id="quality"></div></div></div>
+</div></section></div><footer>«Тропинка» · Детские квесты и семейные приключения · Прототип</footer></div>
+<script>
+(function(){
+"use strict";
+var studio=new URLSearchParams(location.search).get("mode")==="studio"||/studio\.html$/i.test(location.pathname);
+var app=document.getElementById("app");
+if(studio){app.classList.add("is-studio");document.getElementById("heroTitle").textContent="Внутренняя студия создания квестов";document.getElementById("heroText").textContent="Создавайте сценарии, проверяйте комплектность, редактируйте и сохраняйте черновики.";document.getElementById("formTitle").textContent="Новый сценарий";document.getElementById("studioLink").classList.add("active");}else{document.getElementById("clientLink").classList.add("active");}
+var alphabet="АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
+var themes={
+agent:{name:"Секретные агенты",title:"Операция «Золотая звезда»",intro:"В штаб поступило секретное сообщение: пропал знак команды. Только внимательные агенты смогут восстановить код и найти тайник.",final:"секретный конверт штаба"},
+pirate:{name:"Пираты и сокровища",title:"Тайна карты капитана",intro:"Капитан оставил карту сокровищ, но спрятал её части в загадках. Команде предстоит пройти испытания и найти сундук.",final:"сундук с сокровищами"},
+space:{name:"Космическая миссия",title:"Спасение звёздной станции",intro:"На станции погас навигационный маяк. Чтобы вернуть сигнал, экипаж должен восстановить координаты и активировать маяк.",final:"капсула с наградой экипажа"},
+detective:{name:"Юный детектив",title:"Дело о пропавшем символе",intro:"Из музея приключений исчез важный символ. Остались следы, шифры и загадки. Детективам нужно собрать доказательства.",final:"папка закрытого дела"},
+magic:{name:"Школа магии",title:"Испытание хранителей света",intro:"Волшебная библиотека потеряла световой кристалл. Чтобы вернуть его, ученикам нужно пройти испытания мудрости.",final:"коробочка хранителя света"},
+forest:{name:"Волшебный лес",title:"Тропа к лесному фонарю",intro:"В лесу погас главный фонарь. Лесные жители оставили подсказки, чтобы команда смогла вернуть свет.",final:"подарок лесного хранителя"}
+};
+var locations={
+apartment:["на нижней полке книжного стеллажа","под подушкой дивана","в коробке с игрушками","на свободном месте стола","рядом с мягкой игрушкой","на безопасной полке в прихожей"],
+house:["на нижней полке стеллажа","в корзине с игрушками","на столе в общей комнате","рядом с комнатным растением","на видной полке в коридоре","у взрослого ведущего"],
+yard:["на скамейке рядом со взрослым","у дерева на уровне роста ребёнка","на столике в беседке","рядом с безопасной клумбой","у входа на огороженную территорию","у взрослого ведущего"],
+park:["у взрослого ведущего на старте","на столике вашей зоны отдыха","у скамейки рядом со взрослым","на стойке внутри вашей площадки","у организатора","на столе в зоне отдыха"],
+cafe:["у взрослого ведущего на столе","на столике вашей компании","у безопасной стойки в зале","рядом с коробкой настольных игр","у взрослого ведущего","на столе вашей компании"]
+};
+function v(id){return document.getElementById(id).value;}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function code(w){return w.split("").map(function(c){return alphabet.indexOf(c)+1;}).join(" · ");}
+function puzzles(age,diff){
+if(age<=6)return [
+{title:"Зоркий глаз",task:"Найди вокруг себя три предмета одного цвета. Назови цвет и покажи находки ведущему.",answer:"Три предмета одного цвета",hint:"Выбирай предметы, которые хорошо видны и находятся на безопасной высоте.",type:"наблюдение"},
+{title:"Загадка следопыта",task:"Без ног бежит, без голоса журчит. Что это? Это можно услышать на прогулке.",answer:"Ручей",hint:"Вспомни, что течёт и тихо шумит.",type:"загадка"},
+{title:"Собери пару",task:"Что можно открыть ключом? Назови один подходящий предмет.",answer:"Дверь или замок",hint:"Подумай о том, что открывают ключом.",type:"логика"},
+{title:"Счёт команды",task:"Было 2 звезды, ведущий добавил ещё 2. Сколько стало звёзд?",answer:"4",hint:"Посчитай все звёзды по одной.",type:"счёт"}
+];
+var list=[
+{title:"Шифр первого уровня",task:"Расшифруй слово. Каждое число — номер буквы русского алфавита без Ё: "+code("КЛЮЧ")+".",answer:"КЛЮЧ",hint:"А = 1, Б = 2, В = 3. Найди букву для каждого числа.",type:"шифр"},
+{title:"Загадка хранителя",task:"Меня берут в дорогу, по мне находят путь. Я могу быть бумажной или на экране. Что это?",answer:"КАРТА",hint:"На мне отмечают места и маршруты.",type:"загадка"},
+{title:"Числовая последовательность",task:age>=10?"Продолжи ряд: 3, 6, 12, 24, __.":"Продолжи ряд: 3, 6, 9, 12, __.",answer:age>=10?"48":"15",hint:age>=10?"Каждое следующее число в два раза больше.":"Каждый раз прибавляй три.",type:"логика"},
+{title:"Слово наоборот",task:"Прочитай справа налево: АТРАК. Какое слово получилось?",answer:"КАРТА",hint:"Начни с последней буквы.",type:"шифр"},
+{title:"Испытание наблюдательности",task:"Найди два предмета, которые начинаются на одну и ту же букву. Назови их ведущему.",answer:"Любые два подходящих предмета",hint:"Осмотрись и выбирай то, до чего легко и безопасно дотянуться.",type:"наблюдение"},
+{title:"Финальный расчёт",task:age>=10?"У команды было 36 жетонов. 9 отдали за подсказку, оставшиеся разделили поровну на 3 группы. Сколько в каждой?":"Команда нашла 12 звёзд и подарила 4. Сколько осталось?",answer:age>=10?"9":"8",hint:age>=10?"Сначала вычти 9 из 36, затем раздели на 3.":"Из 12 вычти 4.",type:"математика"}
+];
+if(diff==="easy")list=list.filter(function(p){return p.type!=="шифр"&&p.type!=="математика";});
+if(diff==="hard"&&age>=10)list.push({title:"Дополнительный код",task:"Расшифруй слово по номерам букв алфавита без Ё: "+code("СЛЕД")+".",answer:"СЛЕД",hint:"Запиши буквы по порядку номеров.",type:"шифр"});
+return list;
+}
+function build(data){
+var theme=themes[data.theme],route=locations[data.place],all=puzzles(data.age,data.difficulty);
+var count=data.age<=6?4:(data.duration<=30?4:data.duration<=45?5:data.duration<=60?6:Math.min(7,all.length));
+if(data.difficulty==="easy")count=Math.max(4,count-1);
+var chosen=all.slice(0,Math.min(count,all.length)),name=data.child.trim()||"Юный исследователь";
+var placeName={apartment:"квартира",house:"частный дом",yard:"двор / дача",park:"парк или база отдыха",cafe:"кафе / помещение"}[data.place];
+var players=data.players==="1"?"один участник":data.players==="family"?"дети и взрослые":data.players+" участника";
+var difficulty={easy:"лёгкая",medium:"средняя",hard:"повышенная"}[data.difficulty];
+var title=theme.title+" — "+name,steps=[],L=[];
+L.push("ТРОПИНКА — ГОТОВЫЙ СЦЕНАРИЙ КВЕСТА",title,"Тема: "+theme.name+" | Возраст: "+data.age+" лет | Участники: "+players,"Место: "+placeName+" | Время: около "+data.duration+" минут | Сложность: "+difficulty,"","ЛЕГЕНДА",theme.intro,"Роль участников: вы — команда исследователей. Помогайте друг другу, внимательно читайте задания и сообщайте ответы ведущему.");
+if(data.interest.trim())L.push("Пожелания: "+data.interest.trim());
+L.push("","ИНСТРУКЦИЯ ДЛЯ ВЗРОСЛОГО");
+L.push("1. Перепиши или распечатай карточки. Если печати нет — ведущий читает задания с телефона.");
+L.push("2. Разложи карточки по маршруту ниже. Первую карточку вручи на старте.");
+L.push("3. Подготовь финальную награду и положи её в безопасное место, доступное взрослому.");
+L.push("4. Объясни правила: не бегать, не открывать закрытые шкафы и двери, не трогать технику, не выходить за игровую зону.");
+L.push("5. Реквизит: "+(data.props==="none"?"карточки или телефон ведущего; специальный реквизит не нужен.":data.props==="print"?"распечатанные карточки, бумага, ручка, конверты и награда.":"бумага, ручка, 4–6 конвертов, небольшая коробка и награда."));
+L.push("","МАРШРУТ И КАРТОЧКИ");
+chosen.forEach(function(p,i){
+var loc=route[i%route.length];
+steps.push({number:i+1,title:p.title,task:p.task,answer:p.answer,hint:p.hint,placement:loc,type:p.type});
+L.push("ЭТАП "+(i+1)+" — "+p.title,"Где спрятать: "+loc+".","Текст карточки: "+p.task+" Когда ответ готов, назови его ведущему и получи следующую подсказку.","Ответ для ведущего: "+p.answer,"Подсказка: "+p.hint,"");
+});
+L.push("ФИНАЛ","После последнего задания вручи награду: "+theme.final+".","Текст финала: «Миссия выполнена, "+name+"! Ты проявил(а) смекалку, внимательность и командный дух. Сокровище найдено!»");
+L.push("","БЕЗОПАСНОСТЬ","Взрослый заранее проверяет маршрут и остаётся рядом. Не размещай подсказки у дороги, воды, огня, розеток, бытовой техники, стекла, на высоте или в закрытых местах. Не запирай детей. На улице игра проходит только в обозначенной безопасной зоне под присмотром.");
+var text=L.join("\n"),checks=[
+{label:"Есть легенда и цель",ok:!!theme.intro},
+{label:"Создано "+steps.length+" этапов",ok:steps.length>=4},
+{label:"У всех заданий есть ответ или способ проверки",ok:steps.every(function(s){return !!s.answer;})},
+{label:"У всех этапов есть место размещения",ok:steps.every(function(s){return !!s.placement;})},
+{label:"У всех заданий есть подсказки",ok:steps.every(function(s){return !!s.hint;})},
+{label:"Добавлены правила безопасности",ok:text.indexOf("БЕЗОПАСНОСТЬ")>=0}
+];
+return {id:"Q-"+Date.now(),title:title,theme:theme.name,age:data.age+" лет",duration:data.duration+" минут",place:placeName,players:players,difficulty:difficulty,intro:theme.intro,steps:steps,text:text,checks:checks,created:new Date().toLocaleString("ru-RU")};
+}
+var current=null,original="";
+function render(q){
+current=q;original=q.text;document.getElementById("empty").hidden=true;document.getElementById("result").hidden=false;
+document.getElementById("questTitle").textContent=q.title;document.getElementById("questIntro").textContent=q.intro;
+document.getElementById("meta").innerHTML=[q.theme,q.age,q.duration,q.place,q.players,"Сложность: "+q.difficulty].map(function(x){return '<span class="tag">'+esc(x)+'</span>';}).join("");
+var html='<div class="section"><h3>Легенда</h3><p>'+esc(q.intro)+'</p></div><div class="section"><h3>Задания и маршрут</h3>';
+q.steps.forEach(function(s){html+='<article class="step"><h4>Этап '+s.number+'. '+esc(s.title)+'</h4><p>'+esc(s.task)+'</p><p class="hint">📍 Разместить: '+esc(s.placement)+'</p><div class="answer"><b>Ответ ведущему:</b> '+esc(s.answer)+'<br><b>Подсказка:</b> '+esc(s.hint)+'</div></article>';});
+html+='</div><div class="section"><h3>Финал и безопасность</h3><p>После последнего задания вручи финальную награду. Взрослый заранее проверяет маршрут и всё время остаётся рядом. Не прячь подсказки у дороги, воды, огня, электроприборов, на высоте или в закрытых местах.</p></div>';
+document.getElementById("rendered").innerHTML=html;
+if(studio){document.getElementById("editor").value=q.text;document.getElementById("quality").innerHTML=q.checks.map(function(c){return '<p>'+(c.ok?"✓ ":"! ")+esc(c.label)+'</p>';}).join("");}
+}
+document.getElementById("questForm").addEventListener("submit",function(e){e.preventDefault();render(build({child:v("child"),age:Number(v("age")),players:v("players"),theme:v("theme"),place:v("place"),duration:Number(v("duration")),difficulty:v("difficulty"),props:v("props"),interest:v("interest")}));});
+document.getElementById("printBtn").addEventListener("click",function(){window.print();});
+document.getElementById("copyBtn").addEventListener("click",function(){if(!current)return;var t=studio?document.getElementById("editor").value:current.text;navigator.clipboard.writeText(t).then(function(){document.getElementById("copyBtn").textContent="Скопировано ✓";}).catch(function(){var x=document.createElement("textarea");x.value=t;document.body.appendChild(x);x.select();document.execCommand("copy");x.remove();});});
+function dl(name,content,type){var a=document.createElement("a"),u=URL.createObjectURL(new Blob([content],{type:type}));a.href=u;a.download=name;a.click();URL.revokeObjectURL(u);}
+document.getElementById("downloadBtn").addEventListener("click",function(){if(current)dl("tropinka-quest.txt",studio?document.getElementById("editor").value:current.text,"text/plain;charset=utf-8");});
+document.getElementById("jsonBtn").addEventListener("click",function(){if(current)dl("tropinka-quest.json",JSON.stringify(current,null,2),"application/json");});
+if(studio){
+function list(){try{return JSON.parse(localStorage.getItem("tropinkaQuestDrafts")||"[]");}catch(e){return [];}}
+function draw(){var a=list(),el=document.getElementById("savedList");if(!a.length){el.textContent="Пока нет сохранённых черновиков.";return;}el.innerHTML=a.map(function(d,i){return '<div class="saved-item"><span>'+esc(d.title)+'</span><button type="button" data-i="'+i+'">Открыть</button></div>';}).join("");el.querySelectorAll("[data-i]").forEach(function(b){b.addEventListener("click",function(){render(a[Number(b.dataset.i)]);document.getElementById("editor").value=a[Number(b.dataset.i)].text;});});}
+document.getElementById("saveDraftBtn").addEventListener("click",function(){if(!current)return;current.text=document.getElementById("editor").value;var a=list();a.unshift(current);localStorage.setItem("tropinkaQuestDrafts",JSON.stringify(a.slice(0,30)));document.getElementById("saveStatus").textContent="Сохранено в этом браузере. Для общей базы нужен сервер.";draw();});
+document.getElementById("resetTextBtn").addEventListener("click",function(){if(current)document.getElementById("editor").value=original;});
+draw();
+}
+})();
+</script></body></html>
